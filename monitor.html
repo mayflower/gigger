@@ -1,0 +1,21 @@
+<html>
+<head>
+	<script type="text/javascript" src="http://localhost:8000/faye.js"></script>
+	<script type="text/javascript" src="../gigger/monitorlib.js"></script>
+</head>
+<body>
+	<h1>MONITOR</h1>
+	
+	<script type="text/javascript">
+		console.log("start gigger test");
+		console.log(this);
+		var gigger = new Gigger.Gigger("http://localhost:8000/faye");
+		
+		var eventRequest = {path: "/fayetest/webapp.html", element: "title_id", event: "click"};
+		gigger.requestEvent(eventRequest);
+		eventRequest = {path: "/fayetest/webapp.html", element: "button_1", event: "click"};
+		gigger.requestEvent(eventRequest);
+	</script>
+
+</body>
+</html>

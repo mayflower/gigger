@@ -1,0 +1,17 @@
+<html>
+<head>
+	<script type="text/javascript" src="http://localhost:8000/faye.js"></script>
+	<script type="text/javascript" src="../gigger/developerlib.js"></script>
+</head>
+<body>
+	<h1 id="title_id">WEBAPP</h1>
+	<form><input type="button" id="button_1" name="Button" value="foo"></form>
+	
+	<script type="text/javascript">
+		console.log("start gigger test");
+		console.log(this);
+		var gigger = new Gigger.Gigger("http://localhost:8000/faye");
+	</script>
+
+</body>
+</html>
