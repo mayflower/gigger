@@ -13,7 +13,13 @@
 	//Class Gigger
 	Gigger.Gigger = function(service) {
 		this.client = new Faye.Client(service);
-		this.client.publish('/dispatch', {url: "localhost/fayetest", element: "body", event: "onClick"});
+		
+		//register for a specific event and publish to dispatcher that we want to have it
+		var eventRequest = {path: "/fayetest/webapp.html", element: "title_id", event: "click"};
+		this.client.subscribe((eventRequest.path+"~"+eventRequest.element+"@"+eventRequest.event).replace(".", "$"), function(event) {
+			console.log("event callback", event);
+		});
+		this.client.publish('/dispatch', eventRequest);
 	};
 
 	Gigger.Gigger.prototype = {
