@@ -1,3 +1,11 @@
 == gigger ==
 
 A javascript library for realtime monitoring of modern web applications.
+
+= Requirements = 
+node.js
+npm (comes with newer node versions)
+faye ('npm install faye')
+
+= Usage =
+start the faye server: 'node server.js'
