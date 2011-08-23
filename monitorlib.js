@@ -32,17 +32,16 @@
 			console.log('Strophe is disconnected.');
 		} else if (status == Strophe.Status.CONNECTED) {
 			console.log('Strophe is connected.');
-			//subscribe to monitor
-			this.send($pres({to: "monitor@localhost", type: "subscribe"}));
+			//emit presence information, we are online
+			this.send($pres());
 		}
 	}
 	
 	var handlePresence = function handlePresence(presence) {
-		console.log(presence);
-	}
-	
-	var handleIq = function handleIq(iq) {
-		console.log(iq);
+		console.log(presence, $(presence).attr);
+		// accept every presence subscription
+		if(presence.attr("type") === "subscribe")
+			this.send($pres({to: presence.attr("from"), type: "subscribed"}));
 	}
 	
 	//Class Gigger
@@ -51,9 +50,8 @@
 		this.connection.rawInput = rawInput;
 		this.connection.rawOutput = rawOutput;
 		
-		//connect handlers
+		//hook handlers
 		this.connection.addHandler(handlePresence, null, "presence");
-		this.connection.addHandler(handleIq, null, "iq");
 		this.connection.connect(jid, pw, onConnect);
 	};
 
