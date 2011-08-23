@@ -11,9 +11,16 @@
 		console.log(this);
 		var gigger = new Gigger.Gigger("http://localhost:8000/faye");
 		
-		var eventRequest = {path: "/fayetest/webapp.html", element: "title_id", event: "click"};
+		var eventRequest = {path: "/gigger/webapp.html", element: "title_id", event: "foo"};
 		gigger.requestEvent(eventRequest);
-		eventRequest = {path: "/fayetest/webapp.html", element: "button_1", event: "click"};
+		eventRequest = {path: "/gigger/webapp.html", element: "button_1", event: "click"};
+		gigger.requestEvent(eventRequest);
+		
+		eventRequest = {pathRegex: "^\/gigger\/.*$", class: "menuurl", event: "click"};
+		gigger.requestEvent(eventRequest);
+		eventRequest = {path: "/gigger/webapp.html", tagName: "a", event: "click"};
+		gigger.requestEvent(eventRequest);
+		eventRequest = {path: "/gigger/webapp.html", customJS: "$(document).connect('...');"};
 		gigger.requestEvent(eventRequest);
 	</script>
 
