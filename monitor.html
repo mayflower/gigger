@@ -1,27 +1,40 @@
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="resources/css/ext-all.css" /> 
+	<link rel="stylesheet" type="text/css" href="shared/example.css" /> 
 	<script type="text/javascript" src="http://localhost:8000/faye.js"></script>
-	<script type="text/javascript" src="../gigger/monitorlib.js"></script>
+	<script type="text/javascript" src="monitorlib.js"></script>
+	<script type="text/javascript" src="bootstrap.js"></script>
+	<script type="text/javascript" src="store.js"></script>
+	<script type="text/javascript" src="extBar.js"></script>
 </head>
 <body>
-	<h1>MONITOR</h1>
-	
 	<script type="text/javascript">
 		console.log("start gigger test");
 		console.log(this);
 		var gigger = new Gigger.Gigger("http://localhost:8000/faye");
 		
-		var eventRequest = {path: "/gigger/webapp.html", element: "title_id", event: "foo"};
-		gigger.requestEvent(eventRequest);
-		eventRequest = {path: "/gigger/webapp.html", element: "button_1", event: "click"};
-		gigger.requestEvent(eventRequest);
+		var addToChart = function(e) {
+			var record = store1.findRecord('event', e.element + ":" + e.event);
+			if (record == null)
+				store1.add({event: e.element + ":" + e.event, times: 1});
+			else
+				record.set('times', record.data.times + 1);
+		};
 		
+		var eventRequest = {path: "/gigger/webapp.html", element: "title_id", event: "click"};
+		gigger.requestEvent(eventRequest, addToChart);
+		
+		eventRequest = {path: "/gigger/webapp.html", element: "button_1", event: "click"};
+		gigger.requestEvent(eventRequest, addToChart);
+		
+		/*
 		eventRequest = {pathRegex: "^\/gigger\/.*$", class: "menuurl", event: "click"};
 		gigger.requestEvent(eventRequest);
 		eventRequest = {path: "/gigger/webapp.html", tagName: "a", event: "click"};
 		gigger.requestEvent(eventRequest);
 		eventRequest = {path: "/gigger/webapp.html", customJS: "alert('foo injection');"};
-		gigger.requestEvent(eventRequest);
+		gigger.requestEvent(eventRequest);*/
 	</script>
 
 </body>

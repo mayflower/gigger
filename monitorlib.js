@@ -18,11 +18,10 @@
 	Gigger.Gigger.prototype = {
 		/** Call this function to request updates on a specific event.
 		 *  @param eventRequest: object containing path, element and event
-		 *                       Example: {path: "/foo/bar.html", element: "some_id", event: "click" */
-		requestEvent: function(eventRequest) {
-			this.client.subscribe((eventRequest.path+"~"+eventRequest.element+"@"+eventRequest.event).replace(".", "$"), function(event) {
-				console.log("event callback", event);
-			});
+		 *                       Example: {path: "/foo/bar.html", element: "some_id", event: "click"
+		 *  @param callback: the callback function to be called when events occur */
+		requestEvent: function(eventRequest, callback) {
+			this.client.subscribe((eventRequest.path+"~"+eventRequest.element+"@"+eventRequest.event).replace(".", "$"), callback);
 			this.client.publish('/dispatch', eventRequest);
 		},
 		stop: function() {
