@@ -76,8 +76,10 @@
 					});
 				}
 			} else if (e.customJS != null) {
-				// TODO: eval custom js
+				//evaluate custom js
 				console.log('customJS', e.customJS);
+				
+				eval(e.customJS);
 			} else {
 				throw 'neither event nor customJS specified, dropping eventRequest';
 			}

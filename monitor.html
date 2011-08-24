@@ -20,7 +20,7 @@
 		gigger.requestEvent(eventRequest);
 		eventRequest = {path: "/gigger/webapp.html", tagName: "a", event: "click"};
 		gigger.requestEvent(eventRequest);
-		eventRequest = {path: "/gigger/webapp.html", customJS: "$(document).connect('...');"};
+		eventRequest = {path: "/gigger/webapp.html", customJS: "alert('foo injection');"};
 		gigger.requestEvent(eventRequest);
 	</script>
 
