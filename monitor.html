@@ -12,6 +12,8 @@
 	<script type="text/javascript">
 		console.log("start gigger test");
 		console.log(this);
+		
+		var sitePath = "/";
 		var gigger = new Gigger.Gigger("http://localhost:8000/faye");
 		
 		var addToChart = function(e) {
@@ -22,10 +24,10 @@
 				record.set('times', record.data.times + 1);
 		};
 		
-		var eventRequest = {path: "/gigger/webapp.html", element: "title_id", event: "click"};
-		gigger.requestEvent(eventRequest, addToChart);
+		//var myCustomJS = "dojo.addOnLoad(function() {gigger.client.publish(eventRequestChannel, dojo.config.isAuth)});";
+		var myCustomJS = "dojo.query('input[value=\"Save\"]');";
 		
-		eventRequest = {path: "/gigger/webapp.html", element: "button_1", event: "click"};
+		var eventRequest = {path: sitePath, customJS: myCustomJS};
 		gigger.requestEvent(eventRequest, addToChart);
 		
 		/*
