@@ -16,10 +16,31 @@
 		var sitePath = "/gigger/webapp.html";
 		var gigger = new Gigger.Gigger("http://faye.node.vm:8000/faye");
 		
+		var identifierString = function(e) {
+			var ret = "";
+			if (e.path != null)
+				ret = e.path;
+			else if (e.pathRegex != null)
+				ret = e.pathRegex;
+			if (e.element != null)
+				ret += ":" + e.element;
+			if (e.event != null)
+				ret += ":" + e.event;
+			if (e.class != null)
+				ret += ":" + e.class;
+			if (e.tagName != null)
+				ret += ":" + e.tagName;
+			if (e.customJS != null)
+				ret += ":" + "customJS";
+			
+			return ret;
+		}
+		
 		var addToChart = function(e) {
-			var record = store1.findRecord('event', e.element + ":" + e.event);
+			var id = identifierString(e);
+			var record = store1.findRecord('event', id);
 			if (record == null)
-				store1.add({event: e.element + ":" + e.event, times: 1});
+				store1.add({event: id, times: 1});
 			else
 				record.set('times', record.data.times + 1);
 		};
