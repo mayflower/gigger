@@ -12,6 +12,14 @@
 		console.log(this);
 		var gigger = new Gigger.Gigger("http://faye.node.vm:8000/faye");
 	</script>
+	
+	<script>
+		var foo = function() {
+			console.log('I am funny and will trigger an event on the catchall channel');
+			gigger.triggerEvent('/catchall', {event: 'onclick', element: 'button2'});
+		}
+	</script>
+	<form><input type="button" id="button2" name="JSButton" value="JSButton" onclick=foo()></form>
 
 </body>
 </html>

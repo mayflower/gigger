@@ -43,6 +43,13 @@
 			eventRequests.push({handle: handle, request: eventRequest});
 			fayeClient.publish('/dispatch', eventRequest);
 		},
+		/** Call this function to listen for events on some channel. This should be used
+		 *  if the webapp is emitting custom events on a predefined channel.
+		 *  @param channel: Channel to listen on for events
+		 *  @param callback: the callback function to be called when events occur */
+		addChannelListener: function(channel, callback) {
+			fayeClient.subscribe(channel, callback);
+		},
 		stop: function() {
 			console.log("stop gigger");
 			this.dispatchRequest.cancel();

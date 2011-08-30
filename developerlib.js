@@ -123,6 +123,14 @@
 	};
 
 	Gigger.Gigger.prototype = {
+		/** Call this function to trigger your custom events on a channel. Use only if
+		 *  the monitor is registered on that channel.
+		 *  @param channel: Channel where the events will be emitted
+		 *  @param event: custom event which will be triggered */
+		triggerEvent: function(channel, event) {
+			console.log(event, 'was triggered manually on ' + channel);
+			fayeClient.publish(channel, event);
+		},
 		stop: function() {
 			console.log("stop gigger");
 			this.dispatch.cancel();

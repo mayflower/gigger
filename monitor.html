@@ -60,6 +60,8 @@
 		eventRequest = {path: sitePath, element: "title_id", event: "click"};
 		gigger.requestEvent(eventRequest, addToChart);
 		
+		gigger.addChannelListener('/catchall', function(event) { console.log('got a custom event on catchall', event); });
+		
 		/*
 		eventRequest = {pathRegex: "^\/gigger\/.*$", class: "menuurl", event: "click"};
 		gigger.requestEvent(eventRequest);
