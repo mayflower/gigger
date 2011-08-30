@@ -16,6 +16,8 @@
 	// global fayeClient
 	var fayeClient;
 	
+	var registeredEvents = new Object();
+	
 	// unique ID generator
 	var generateUniqueID = function() {
 		var d = new Date;
@@ -74,12 +76,25 @@
 				
 				// append event handler to all events
 				for (var i = 0; i < elements.length; i++) {
+					
+					console.log('add handler');
+					
+					// lookup event, if it was already registered: break, otherwise append to list
+					if (registeredEvents[e.event] != null) {
+						if (registeredEvents[e.event].indexOf(elements[i]) != -1) {
+							break;
+						} else {
+							registeredEvents[e.event].push(elements[i]);
+						}
+					} else {
+						registeredEvents[e.event] = new Array(elements[i]);
+					}
 					elements[i].addEventListener(e.event, function(event) {
 						console.log("event callback", event);
 						// append the timestamp to the original eventRequest
 						e.timeStamp = event.timeStamp;
 						fayeClient.publish(eventRequestChannel, e);
-					});
+					}, false);
 				}
 			} else if (e.customJS != null) {
 				//evaluate custom js
