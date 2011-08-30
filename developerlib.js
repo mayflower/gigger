@@ -16,6 +16,12 @@
 	// global fayeClient
 	var fayeClient;
 	
+	// unique ID generator
+	var generateUniqueID = function() {
+		var d = new Date;
+		return d.getTime().toString() + Math.floor(Math.random()*101);
+	}
+	
 	var handleDispatch = function(eventRequest) {
 		console.log("dispatch got message:", eventRequest);
 		
@@ -92,13 +98,20 @@
 	Gigger.Gigger = function(service) {
 		fayeClient = new Faye.Client(service);
 		this.client = fayeClient;
+		// subscribe to dispatch channel for new eventRequests
 		this.dispatch = this.client.subscribe('/dispatch', handleDispatch);
+		
+		// ask monitoring client if there are already some dispatch Requests open
+		var id = '/dispatch/' + generateUniqueID();
+		this.dispatchRequest = this.client.subscribe(id, handleDispatch);
+		this.client.publish('/dispatchRequest', {uniqueChannelId: id});
 	};
 
 	Gigger.Gigger.prototype = {
 		stop: function() {
 			console.log("stop gigger");
 			this.dispatch.cancel();
+			this.dispatchRequest.cancel();
 		}
 	};
 

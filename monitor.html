@@ -2,7 +2,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="resources/css/ext-all.css" /> 
 	<link rel="stylesheet" type="text/css" href="shared/example.css" /> 
-	<script type="text/javascript" src="http://localhost:8000/faye.js"></script>
+	<script type="text/javascript" src="http://faye.node.vm:8000/faye.js"></script>
 	<script type="text/javascript" src="monitorlib.js"></script>
 	<script type="text/javascript" src="bootstrap.js"></script>
 	<script type="text/javascript" src="store.js"></script>
@@ -13,8 +13,8 @@
 		console.log("start gigger test");
 		console.log(this);
 		
-		var sitePath = "/";
-		var gigger = new Gigger.Gigger("http://localhost:8000/faye");
+		var sitePath = "/gigger/webapp.html";
+		var gigger = new Gigger.Gigger("http://faye.node.vm:8000/faye");
 		
 		var addToChart = function(e) {
 			var record = store1.findRecord('event', e.element + ":" + e.event);
@@ -25,9 +25,18 @@
 		};
 		
 		//var myCustomJS = "dojo.addOnLoad(function() {gigger.client.publish(eventRequestChannel, dojo.config.isAuth)});";
-		var myCustomJS = "dojo.query('input[value=\"Save\"]');";
+		//var myCustomJS = "dojo.query('input[value=\"Save\"]');";
 		
-		var eventRequest = {path: sitePath, customJS: myCustomJS};
+		//var eventRequest = {path: sitePath, customJS: myCustomJS};
+		//gigger.requestEvent(eventRequest, addToChart);
+		
+		var eventRequest = {path: sitePath, tagName: "body", event: "click"};
+		gigger.requestEvent(eventRequest, addToChart);
+		
+		eventRequest = {path: sitePath, class: "foo", event: "mouseover"};
+		gigger.requestEvent(eventRequest, addToChart);
+		
+		eventRequest = {path: sitePath, element: "title_id", event: "click"};
 		gigger.requestEvent(eventRequest, addToChart);
 		
 		/*
