@@ -38,13 +38,12 @@ Ext.onReady(function () {
         }
     });
 
-    var win = Ext.create('Ext.Window', {
-        width: 400,
-        height: 300,
+    var win = Ext.create('Ext.Panel', {
+        width: 800,
+        height: 600,
         hidden: false,
-        maximizable: true,
         title: 'Bar Chart',
-        renderTo: Ext.getBody(),
+        renderTo: Ext.get(event_div),
         layout: 'fit',
         items: {
             id: 'chartCmp',

@@ -7,8 +7,39 @@
 	<script type="text/javascript" src="bootstrap.js"></script>
 	<script type="text/javascript" src="store.js"></script>
 	<script type="text/javascript" src="extBar.js"></script>
+	
+	<script type="text/javascript">
+		var canvas;
+		var context;
+		
+		var initCanvas = function() {
+			canvas = document.getElementById('canvas');
+			context = canvas.getContext('2d');
+			
+			//draw canvas border
+			context.strokeRect(0, 0, canvas.width, canvas.height);
+		}
+		
+		var drawDot = function(x, y) {
+			context.beginPath();
+			context.arc(x, y, 5, 0, Math.PI*2, true); 
+			context.closePath();
+			context.fill();
+		}
+	</script>
 </head>
-<body>
+<body onload="initCanvas()">
+	<div id="canvas_div">
+		<h2>Canvas showing clicks on the webapp</h2>
+		<canvas id="canvas" height="600" width="800">
+			Get a newer browser that supports canvas
+		</canvas>
+	</div>
+	
+	<div id="event_div">
+		<h2>Ext.js chart showing event occurences</h2>
+	</div>
+	
 	<script type="text/javascript">
 		console.log("start gigger test");
 		console.log(this);
@@ -45,13 +76,19 @@
 				record.set('times', record.data.times + 1);
 		};
 		
+		var addToHeat = function(e) {
+			drawDot(e.x, e.y);
+		};
+		
 		//var myCustomJS = "dojo.addOnLoad(function() {gigger.client.publish(eventRequestChannel, dojo.config.isAuth)});";
 		//var myCustomJS = "dojo.query('input[value=\"Save\"]');";
 		
-		//var eventRequest = {path: sitePath, customJS: myCustomJS};
+		var eventRequest;
+		
+		//eventRequest = {path: sitePath, customJS: myCustomJS};
 		//gigger.requestEvent(eventRequest, addToChart);
 		
-		var eventRequest = {path: sitePath, tagName: "body", event: "click"};
+		eventRequest = {path: sitePath, tagName: "body", event: "click"};
 		gigger.requestEvent(eventRequest, addToChart);
 		
 		eventRequest = {path: sitePath, class: "foo", event: "mouseover"};
@@ -60,7 +97,14 @@
 		eventRequest = {path: sitePath, element: "title_id", event: "click"};
 		gigger.requestEvent(eventRequest, addToChart);
 		
-		gigger.addChannelListener('/catchall', function(event) { console.log('got a custom event on catchall', event); });
+		gigger.addChannelListener('/heatmap', function(event) { console.log('got a custom event on heatmap', event, event.x, event.y); addToHeat(event) });
+		eventRequest = {path: sitePath, customJS: "document.getElementsByTagName('body')[0].addEventListener('click', function(e) { gigger.triggerEvent('/heatmap', {event: 'click', x: e.pageX, y: e.pageY}); });"};
+		gigger.requestEvent(eventRequest);
+		
+		gigger.addChannelListener('/catchall', function(event) {
+			console.log('got a custom event on catchall', event);
+			addToChart(event);
+		});
 		
 		/*
 		eventRequest = {pathRegex: "^\/gigger\/.*$", class: "menuurl", event: "click"};
