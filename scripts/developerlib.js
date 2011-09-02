@@ -3,7 +3,7 @@
 */
 
 //require.js module pattern
-define(["http://faye.node.vm:8000/faye.js"], function (callback) {
+define(["http://faye.node.vm:8000/faye.js"], function () {
 
 	//namespace
 	var Gigger = {
