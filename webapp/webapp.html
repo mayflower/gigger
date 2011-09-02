@@ -1,17 +1,18 @@
 <html>
 <head>
-	<script type="text/javascript" src="http://faye.node.vm:8000/faye.js"></script>
-	<script type="text/javascript" src="../scripts/developerlib.js"></script>
+	<script type="text/javascript" src="../scripts/require.js"></script>
+	<script type="text/javascript">
+		require(["../scripts/developerlib"], function(developerlib) {
+			console.log("developerlib ready", developerlib);
+			
+			// save globally
+			gigger = new developerlib.Gigger.Gigger("http://faye.node.vm:8000/faye");
+		});
+	</script>
 </head>
 <body>
 	<h1 id="title_id" class="foo">WEBAPP</h1>
 	<form><input type="button" id="button_1" name="Button" value="foo"></form>
-	
-	<script type="text/javascript">
-		console.log("start gigger test");
-		console.log(this);
-		var gigger = new Gigger.Gigger("http://faye.node.vm:8000/faye");
-	</script>
 	
 	<script>
 		var foo = function() {

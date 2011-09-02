@@ -2,8 +2,82 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="resources/css/ext-all.css" /> 
 	<link rel="stylesheet" type="text/css" href="shared/example.css" /> 
-	<script type="text/javascript" src="http://faye.node.vm:8000/faye.js"></script>
-	<script type="text/javascript" src="../scripts/monitorlib.js"></script>
+	<script type="text/javascript" src="../scripts/require.js"></script>
+	<script type="text/javascript">
+		require(["../scripts/monitorlib"], function(monitorlib) {
+			console.log("monitorlib ready", monitorlib);
+			
+			var sitePath = "/gigger/webapp/webapp.html";
+			var gigger = new monitorlib.Gigger.Gigger("http://faye.node.vm:8000/faye");
+			
+			var identifierString = function(e) {
+				var ret = "";
+				if (e.path != null)
+					ret = e.path;
+				else if (e.pathRegex != null)
+					ret = e.pathRegex;
+				if (e.element != null)
+					ret += ":" + e.element;
+				if (e.event != null)
+					ret += ":" + e.event;
+				if (e.class != null)
+					ret += ":" + e.class;
+				if (e.tagName != null)
+					ret += ":" + e.tagName;
+				if (e.customJS != null)
+					ret += ":" + "customJS";
+				
+				return ret;
+			}
+			
+			var addToChart = function(e) {
+				var id = identifierString(e);
+				var record = store1.findRecord('event', id);
+				if (record == null)
+					store1.add({event: id, times: 1});
+				else
+					record.set('times', record.data.times + 1);
+			};
+			
+			var addToHeat = function(e) {
+				drawDot(e.x, e.y);
+			};
+			
+			//var myCustomJS = "dojo.addOnLoad(function() {gigger.client.publish(eventRequestChannel, dojo.config.isAuth)});";
+			//var myCustomJS = "dojo.query('input[value=\"Save\"]');";
+			
+			var eventRequest;
+			
+			//eventRequest = {path: sitePath, customJS: myCustomJS};
+			//gigger.requestEvent(eventRequest, addToChart);
+			
+			eventRequest = {path: sitePath, tagName: "body", event: "click"};
+			gigger.requestEvent(eventRequest, addToChart);
+			
+			eventRequest = {path: sitePath, class: "foo", event: "mouseover"};
+			gigger.requestEvent(eventRequest, addToChart);
+			
+			eventRequest = {path: sitePath, element: "title_id", event: "click"};
+			gigger.requestEvent(eventRequest, addToChart);
+			
+			gigger.addChannelListener('/heatmap', function(event) { console.log('got a custom event on heatmap', event, event.x, event.y); addToHeat(event) });
+			eventRequest = {path: sitePath, customJS: "document.getElementsByTagName('body')[0].addEventListener('click', function(e) { gigger.triggerEvent('/heatmap', {event: 'click', x: e.pageX, y: e.pageY}); });"};
+			gigger.requestEvent(eventRequest);
+			
+			gigger.addChannelListener('/catchall', function(event) {
+				console.log('got a custom event on catchall', event);
+				addToChart(event);
+			});
+			
+			/*
+			eventRequest = {pathRegex: "^\/gigger\/.*$", class: "menuurl", event: "click"};
+			gigger.requestEvent(eventRequest);
+			eventRequest = {path: "/gigger/webapp.html", tagName: "a", event: "click"};
+			gigger.requestEvent(eventRequest);
+			eventRequest = {path: "/gigger/webapp.html", customJS: "alert('foo injection');"};
+			gigger.requestEvent(eventRequest);*/
+		});
+	</script>
 	<script type="text/javascript" src="bootstrap.js"></script>
 	<script type="text/javascript" src="store.js"></script>
 	<script type="text/javascript" src="extBar.js"></script>
@@ -39,81 +113,5 @@
 	<div id="event_div">
 		<h2>Ext.js chart showing event occurences</h2>
 	</div>
-	
-	<script type="text/javascript">
-		console.log("start gigger test");
-		console.log(this);
-		
-		var sitePath = "/gigger/webapp/webapp.html";
-		var gigger = new Gigger.Gigger("http://faye.node.vm:8000/faye");
-		
-		var identifierString = function(e) {
-			var ret = "";
-			if (e.path != null)
-				ret = e.path;
-			else if (e.pathRegex != null)
-				ret = e.pathRegex;
-			if (e.element != null)
-				ret += ":" + e.element;
-			if (e.event != null)
-				ret += ":" + e.event;
-			if (e.class != null)
-				ret += ":" + e.class;
-			if (e.tagName != null)
-				ret += ":" + e.tagName;
-			if (e.customJS != null)
-				ret += ":" + "customJS";
-			
-			return ret;
-		}
-		
-		var addToChart = function(e) {
-			var id = identifierString(e);
-			var record = store1.findRecord('event', id);
-			if (record == null)
-				store1.add({event: id, times: 1});
-			else
-				record.set('times', record.data.times + 1);
-		};
-		
-		var addToHeat = function(e) {
-			drawDot(e.x, e.y);
-		};
-		
-		//var myCustomJS = "dojo.addOnLoad(function() {gigger.client.publish(eventRequestChannel, dojo.config.isAuth)});";
-		//var myCustomJS = "dojo.query('input[value=\"Save\"]');";
-		
-		var eventRequest;
-		
-		//eventRequest = {path: sitePath, customJS: myCustomJS};
-		//gigger.requestEvent(eventRequest, addToChart);
-		
-		eventRequest = {path: sitePath, tagName: "body", event: "click"};
-		gigger.requestEvent(eventRequest, addToChart);
-		
-		eventRequest = {path: sitePath, class: "foo", event: "mouseover"};
-		gigger.requestEvent(eventRequest, addToChart);
-		
-		eventRequest = {path: sitePath, element: "title_id", event: "click"};
-		gigger.requestEvent(eventRequest, addToChart);
-		
-		gigger.addChannelListener('/heatmap', function(event) { console.log('got a custom event on heatmap', event, event.x, event.y); addToHeat(event) });
-		eventRequest = {path: sitePath, customJS: "document.getElementsByTagName('body')[0].addEventListener('click', function(e) { gigger.triggerEvent('/heatmap', {event: 'click', x: e.pageX, y: e.pageY}); });"};
-		gigger.requestEvent(eventRequest);
-		
-		gigger.addChannelListener('/catchall', function(event) {
-			console.log('got a custom event on catchall', event);
-			addToChart(event);
-		});
-		
-		/*
-		eventRequest = {pathRegex: "^\/gigger\/.*$", class: "menuurl", event: "click"};
-		gigger.requestEvent(eventRequest);
-		eventRequest = {path: "/gigger/webapp.html", tagName: "a", event: "click"};
-		gigger.requestEvent(eventRequest);
-		eventRequest = {path: "/gigger/webapp.html", customJS: "alert('foo injection');"};
-		gigger.requestEvent(eventRequest);*/
-	</script>
-
 </body>
 </html>

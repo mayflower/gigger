@@ -2,11 +2,8 @@
 * Author: Felix Kaser <felix.kaser@mayflower.de>
 */
 
-//Element Handler
-
-
-//Gigger Module
-(function (callback) {
+//require.js module pattern
+define(["http://faye.node.vm:8000/faye.js"], function (callback) {
 
 	//namespace
 	var Gigger = {
@@ -138,11 +135,7 @@
 		}
 	};
 
-
-	if (callback) {
-		callback(Gigger);
-	}
-
-})(function (instance) {
-	window.Gigger = instance;
+	return {
+		Gigger: Gigger
+	};
 });
