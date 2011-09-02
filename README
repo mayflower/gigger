@@ -8,4 +8,7 @@ npm (comes with newer node versions)
 faye ('npm install faye')
 
 = Usage =
-start the faye server: 'node server.js'
+start the faye server: 'node server/server.js'
+
+== Build ==
+node r.js -o scripts/gigger.build.js

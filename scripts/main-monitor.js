@@ -1,0 +1,2 @@
+require(["monitorlib"], function (monitorlib) {
+});

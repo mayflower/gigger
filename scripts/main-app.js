@@ -1,0 +1,2 @@
+require(["developerlib"], function (developerlib) {
+});
