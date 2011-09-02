@@ -3,7 +3,9 @@
 */
 
 //require.js module pattern
-define(["http://faye.node.vm:8000/faye.js"], function () {
+define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
+
+	console.log(jquery);
 
 	//namespace
 	var Gigger = {
@@ -49,55 +51,44 @@ define(["http://faye.node.vm:8000/faye.js"], function () {
 			
 			if (e.event != null) {
 				// event was specified, must come with element, class or tagName
-				var elements = [];
+				var elements;
 				if (e.element != null) {
 					//lookup element and hook event
 					console.log('element', e.element);
 					
 					// hack to make code more generic
-					elements = [document.getElementById(e.element)];
-					elements.length = 1;
+					elements = jquery("#" + e.element);
 				} else if (e.class != null) {
 					//lookup class and hook event(s)
 					console.log('class', e.class);
 					
-					elements = document.getElementsByClassName(e.class);
+					elements = jquery("." + e.class);
 				} else if (e.tagName != null) {
 					//lookup tag name and hook event(s)
 					console.log('tagName', e.tagName);
 					
-					elements = document.getElementsByTagName(e.tagName);
+					elements = jquery(e.tagName);
 				} else {
 					throw 'events must come with element, class or tagName, dropping eventRequest';
 				}
 				
+				console.log('elements is: ', elements);
 				// append event handler to all events
-				for (var i = 0; i < elements.length; i++) {
-					
-					console.log('add handler');
-					
-					// lookup event, if it was already registered: break, otherwise append to list
-					if (registeredEvents[e.event] != null) {
-						if (registeredEvents[e.event].indexOf(elements[i]) != -1) {
-							break;
-						} else {
-							registeredEvents[e.event].push(elements[i]);
-						}
-					} else {
-						registeredEvents[e.event] = new Array(elements[i]);
-					}
-					elements[i].addEventListener(e.event, function(event) {
-						console.log("event callback", event);
-						// append the timestamp to the original eventRequest
-						e.timeStamp = event.timeStamp;
-						fayeClient.publish(eventRequestChannel, e);
-					}, false);
-				}
+				// remove previously attached events
+				// TODO: check if this could cause problems
+				elements.die(e.event);
+				elements.live(e.event, function(event) {
+					console.log("event callback", event);
+					// append the timestamp to the original eventRequest
+					e.timeStamp = event.timeStamp;
+					fayeClient.publish(eventRequestChannel, e);
+				});
 			} else if (e.customJS != null) {
 				//evaluate custom js
 				console.log('customJS', e.customJS);
 				
-				eval(e.customJS);
+				// TODO: we should make sure this gets evaluated only once
+				jquery.globalEval(e.customJS);
 			} else {
 				throw 'neither event nor customJS specified, dropping eventRequest';
 			}
