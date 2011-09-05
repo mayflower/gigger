@@ -15,7 +15,7 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 	// global fayeClient
 	var fayeClient;
 	
-	var registeredEvents = new Object();
+	var registeredCustomJS = [];
 	
 	// unique ID generator
 	var generateUniqueID = function() {
@@ -88,8 +88,11 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 				//evaluate custom js
 				console.log('customJS', e.customJS);
 				
-				// TODO: we should make sure this gets evaluated only once
-				jquery.globalEval(e.customJS);
+				// make sure this gets evaluated only once
+				if (jquery.inArray(e.customJS, registeredCustomJS) == -1) {
+					registeredCustomJS.push(e.customJS);
+					jquery.globalEval(e.customJS);
+				}
 			} else {
 				throw 'neither event nor customJS specified, dropping eventRequest';
 			}
