@@ -2,11 +2,12 @@
 <head>
 	<script type="text/javascript" src="../scripts/require-jquery.js"></script>
 	<script type="text/javascript">
-		require(["../scripts/developerlib"], function(developerlib) {
+		require.config({baseUrl: "../gigger-build"});
+		require(["developerlib"], function(developerlib) {
 			console.log("developerlib ready", developerlib);
 			
 			// save globally
-			gigger = new developerlib.Gigger.Gigger("http://faye.node.vm:8000/faye");
+			gigger = new developerlib.Gigger("http://faye.node.vm:8000/faye");
 		});
 	</script>
 </head>

@@ -130,7 +130,5 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 		}
 	};
 
-	return {
-		Gigger: Gigger
-	};
+	return Gigger;
 });

@@ -60,8 +60,6 @@ define(["http://faye.node.vm:8000/faye.js"], function () {
 		}
 	};
 
-	return {
-		Gigger: Gigger
-	};
+	return Gigger;
 
 });
