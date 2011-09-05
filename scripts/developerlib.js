@@ -75,7 +75,8 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 				console.log('elements is: ', elements);
 				// append event handler to all events
 				// remove previously attached events
-				// TODO: check if this could cause problems
+				// namespace event to prevent conflicts
+				e.event = e.event + ".gigger";
 				elements.die(e.event);
 				elements.live(e.event, function(event) {
 					console.log("event callback", event);
