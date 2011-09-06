@@ -9,6 +9,21 @@ faye ('npm install faye')
 
 = Usage =
 start the faye server: 'node server/server.js'
+include require.js in your webapp and add following snippet:
+
+<script type="text/javascript" src="require.js"></script>
+<script type="text/javascript">
+	// make sure developerlib.js can be found by adapting the base URL
+	require.config({baseUrl: "scripts"});
+	require(["developerlib"], function(developerlib) {
+		// adapt the path to faye
+		gigger = new developerlib.Gigger("http://faye.node.vm:8000/faye");
+	});
+</script>
+
+you can now include the monitorlib in the same way in your monitor application
+and start dispatching eventRequests. See gigger/monitor/monitor.html for some
+examples.
 
 == Build ==
 node r.js -o scripts/gigger.build.js
