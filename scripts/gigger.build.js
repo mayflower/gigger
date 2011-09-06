@@ -4,10 +4,10 @@
     optimize: "none",
     modules: [
         {
-            name: "main-app"
+            name: "developerlib"
         },
         {
-            name: "main-monitor"
+            name: "monitorlib"
         }
     ]
 })
