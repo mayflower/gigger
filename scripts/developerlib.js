@@ -80,8 +80,11 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 				elements.die(e.event);
 				elements.live(e.event, function(event) {
 					console.log("event callback", event);
-					// append the timestamp to the original eventRequest
-					e.timeStamp = event.timeStamp;
+					// fill the requested fields
+					for (var fieldname in e.fields) {
+						e.fields[fieldname] = event[fieldname];
+					}
+					
 					fayeClient.publish(eventRequestChannel, e);
 				});
 			} else if (e.customJS != null) {

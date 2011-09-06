@@ -53,13 +53,15 @@
 			//eventRequest = {path: sitePath, customJS: myCustomJS};
 			//gigger.requestEvent(eventRequest, addToChart);
 			
-			eventRequest = {path: sitePath, tagName: "body", event: "click"};
+			var fields = {pageX: null, pageY: null, timeStamp: null};
+			
+			eventRequest = {path: sitePath, tagName: "body", event: "click", fields: fields};
 			gigger.requestEvent(eventRequest, addToChart);
 			
-			eventRequest = {path: sitePath, class: "foo", event: "mouseover"};
+			eventRequest = {path: sitePath, class: "foo", event: "mouseover", fields: fields};
 			gigger.requestEvent(eventRequest, addToChart);
 			
-			eventRequest = {path: sitePath, element: "title_id", event: "click"};
+			eventRequest = {path: sitePath, element: "title_id", event: "click", fields: fields};
 			gigger.requestEvent(eventRequest, addToChart);
 			
 			gigger.addChannelListener('/heatmap', function(event) { console.log('got a custom event on heatmap', event, event.x, event.y); addToHeat(event) });
