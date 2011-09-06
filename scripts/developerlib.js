@@ -79,12 +79,21 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 				e.event = e.event + ".gigger";
 				elements.die(e.event);
 				elements.live(e.event, function(event) {
-					console.log("event callback", event);
-					// fill the requested fields
-					for (var fieldname in e.fields) {
-						e.fields[fieldname] = event[fieldname];
-					}
+					console.log("event callback", event, e.fields);
 					
+					// fill the requested fields
+					function fillFields(currentElement, currentField) {
+						for (var fieldname in currentField) {
+							if (currentField[fieldname] != null && typeof(currentField[fieldname]) == "object") {
+								fillFields(currentElement[fieldname], currentField[fieldname]);
+							} else {
+								currentField[fieldname] = currentElement[fieldname];
+							}
+						}
+					};
+					
+					// recursively fill fields
+					fillFields(event, e.fields);
 					fayeClient.publish(eventRequestChannel, e);
 				});
 			} else if (e.customJS != null) {

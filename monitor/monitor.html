@@ -33,6 +33,7 @@
 			}
 			
 			var addToChart = function(e) {
+				console.log(e);
 				var id = identifierString(e);
 				var record = store1.findRecord('event', id);
 				if (record == null)
@@ -53,7 +54,7 @@
 			//eventRequest = {path: sitePath, customJS: myCustomJS};
 			//gigger.requestEvent(eventRequest, addToChart);
 			
-			var fields = {pageX: null, pageY: null, timeStamp: null};
+			var fields = {pageX: null, pageY: null, timeStamp: null, currentTarget: {innerText: null}, blub: null};
 			
 			eventRequest = {path: sitePath, tagName: "body", event: "click", fields: fields};
 			gigger.requestEvent(eventRequest, addToChart);
