@@ -5,7 +5,8 @@
 //require.js module pattern
 define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 
-	console.log(jquery);
+	jquery = $.noConflict(true);
+	console.log('developerlib started', 'jquery: ', jquery, '$: ', $);
 
 	//namespace
 	var Gigger = {
