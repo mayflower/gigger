@@ -3,10 +3,11 @@
 */
 
 //require.js module pattern
-define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
+define(["jquery", "util", "http://faye.node.vm:8000/faye.js"], function (jquery, util) {
 
 	jquery = $.noConflict(true);
 	console.log('developerlib started', 'jquery: ', jquery, '$: ', $);
+	console.log('util module: ', util);
 
 	//namespace
 	var Gigger = {
@@ -48,8 +49,6 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 				throw 'neither path nor pathRegex was specified, dropping eventRequest';
 			}
 			
-			var eventRequestChannel = (e.path+"~"+e.element+"@"+e.event).replace(".", "$");
-			
 			if (e.event != null) {
 				// event was specified, must come with element, class or tagName
 				var elements;
@@ -77,9 +76,9 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 				// append event handler to all events
 				// remove previously attached events
 				// namespace event to prevent conflicts
-				e.event = e.event + ".gigger";
-				elements.die(e.event);
-				elements.live(e.event, function(event) {
+				var namespacedEvent = e.event + ".gigger";
+				elements.die(namespacedEvent);
+				elements.live(namespacedEvent, function(event) {
 					console.log("event callback", event, e.fields);
 					
 					// fill the requested fields
@@ -95,7 +94,7 @@ define(["jquery", "http://faye.node.vm:8000/faye.js"], function (jquery) {
 					
 					// recursively fill fields
 					fillFields(event, e.fields);
-					fayeClient.publish(eventRequestChannel, e);
+					fayeClient.publish(util.getChannelID(e), e);
 				});
 			} else if (e.customJS != null) {
 				//evaluate custom js

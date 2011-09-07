@@ -3,7 +3,7 @@
 */
 
 //require.js module pattern
-define(["http://faye.node.vm:8000/faye.js"], function () {
+define(["util", "http://faye.node.vm:8000/faye.js"], function (util) {
 
 	//namespace
 	var Gigger = {
@@ -39,7 +39,7 @@ define(["http://faye.node.vm:8000/faye.js"], function () {
 		 *  @param callback: the callback function to be called when events occur */
 		requestEvent: function(eventRequest, callback) {
 			// subscribe to the channel, store request for later and call the dispatcher
-			var handle = this.client.subscribe((eventRequest.path+"~"+eventRequest.element+"@"+eventRequest.event).replace(".", "$"), callback);
+			var handle = this.client.subscribe(util.getChannelID(eventRequest), callback);
 			eventRequests.push({handle: handle, request: eventRequest});
 			fayeClient.publish('/dispatch', eventRequest);
 		},

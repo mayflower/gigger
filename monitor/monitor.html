@@ -33,7 +33,7 @@
 			}
 			
 			var addToChart = function(e) {
-				console.log(e);
+				console.log("add to chart: ", e);
 				var id = identifierString(e);
 				var record = store1.findRecord('event', id);
 				if (record == null)
