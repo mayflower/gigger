@@ -79,22 +79,25 @@ define(["jquery", "util", "http://faye.node.vm:8000/faye.js"], function (jquery,
 				var namespacedEvent = e.event + ".gigger";
 				elements.die(namespacedEvent);
 				elements.live(namespacedEvent, function(event) {
-					console.log("event callback", event, e.fields);
-					
-					// fill the requested fields
-					function fillFields(currentElement, currentField) {
-						for (var fieldname in currentField) {
-							if (currentField[fieldname] != null && typeof(currentField[fieldname]) == "object") {
-								fillFields(currentElement[fieldname], currentField[fieldname]);
-							} else {
-								currentField[fieldname] = currentElement[fieldname];
+					jquery(document).ready( function() {
+						var text = jquery(event.target).text();
+						console.log("event callback", event, e.fields, "text is: ", text, "jquery object: ", jquery(event.target));
+						
+						// fill the requested fields
+						function fillFields(currentElement, currentField) {
+							for (var fieldname in currentField) {
+								if (currentField[fieldname] != null && typeof(currentField[fieldname]) == "object") {
+									fillFields(currentElement[fieldname], currentField[fieldname]);
+								} else {
+									currentField[fieldname] = currentElement[fieldname];
+								}
 							}
-						}
-					};
-					
-					// recursively fill fields
-					fillFields(event, e.fields);
-					fayeClient.publish(util.getChannelID(e), e);
+						};
+						
+						// recursively fill fields
+						fillFields(event, e.fields);
+						fayeClient.publish(util.getChannelID(e), e);
+					});
 				});
 			} else if (e.customJS != null) {
 				//evaluate custom js
