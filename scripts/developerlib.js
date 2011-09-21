@@ -6,8 +6,8 @@
 define(["jquery", "util", "http://gigger.mayflower.de/faye.js"], function (jquery, util) {
 
 	jquery = $.noConflict(true);
-	console.log('developerlib started', 'jquery: ', jquery, '$: ', $);
-	console.log('util module: ', util);
+	//console.log('developerlib started', 'jquery: ', jquery, '$: ', $);
+	//console.log('util module: ', util);
 
 	//namespace
 	var Gigger = {
@@ -26,23 +26,23 @@ define(["jquery", "util", "http://gigger.mayflower.de/faye.js"], function (jquer
 	}
 	
 	var handleDispatch = function(eventRequest) {
-		console.log("dispatch got message:", eventRequest);
+		//console.log("dispatch got message:", eventRequest);
 		
 		var e = eventRequest;
 		
 		try {
 			if (e.path != null) {
 				//check if path is valid
-				console.log('path', e.path);
+				//console.log('path', e.path);
 				if (e.path != window.location.pathname) {
-					console.log('not my event, dropping', e);
+					//console.log('not my event, dropping', e);
 					return;
 				}
 			} else if (e.pathRegex != null){
 				//check path regex
-				console.log('pathRegex', e.pathRegex);
+				//console.log('pathRegex', e.pathRegex);
 				if (window.location.pathname.match(e.pathRegex) == null) {
-					console.log('not my event, dropping', e);
+					//console.log('not my event, dropping', e);
 					return;
 				}
 			} else {
@@ -54,25 +54,25 @@ define(["jquery", "util", "http://gigger.mayflower.de/faye.js"], function (jquer
 				var elements;
 				if (e.element != null) {
 					//lookup element and hook event
-					console.log('element', e.element);
+					//console.log('element', e.element);
 					
 					// hack to make code more generic
 					elements = jquery("#" + e.element);
 				} else if (e.class != null) {
 					//lookup class and hook event(s)
-					console.log('class', e.class);
+					//console.log('class', e.class);
 					
 					elements = jquery("." + e.class);
 				} else if (e.tagName != null) {
 					//lookup tag name and hook event(s)
-					console.log('tagName', e.tagName);
+					//console.log('tagName', e.tagName);
 					
 					elements = jquery(e.tagName);
 				} else {
 					throw 'events must come with element, class or tagName, dropping eventRequest';
 				}
 				
-				console.log('elements is: ', elements);
+				//console.log('elements is: ', elements);
 				// append event handler to all events
 				// remove previously attached events
 				// namespace event to prevent conflicts
@@ -81,7 +81,7 @@ define(["jquery", "util", "http://gigger.mayflower.de/faye.js"], function (jquer
 				elements.live(namespacedEvent, function(event) {
 					jquery(document).ready( function() {
 						var text = jquery(event.target).text();
-						console.log("event callback", event, e.fields, "text is: ", text, "jquery object: ", jquery(event.target));
+						//console.log("event callback", event, e.fields, "text is: ", text, "jquery object: ", jquery(event.target));
 						
 						// fill the requested fields
 						function fillFields(currentElement, currentField) {
@@ -135,11 +135,11 @@ define(["jquery", "util", "http://gigger.mayflower.de/faye.js"], function (jquer
 		 *  @param channel: Channel where the events will be emitted
 		 *  @param event: custom event which will be triggered */
 		triggerEvent: function(channel, event) {
-			console.log(event, 'was triggered manually on ' + channel);
+			//console.log(event, 'was triggered manually on ' + channel);
 			fayeClient.publish(channel, event);
 		},
 		stop: function() {
-			console.log("stop gigger");
+			//console.log("stop gigger");
 			this.dispatch.cancel();
 			this.dispatchRequest.cancel();
 		}

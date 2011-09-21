@@ -13,7 +13,7 @@ define(["util", "http://gigger.mayflower.de/faye.js"], function (util) {
 	var handleDispatchRequest = function(dispatchRequest) {
 		for (i = 0; i<eventRequests.length; i++) {
 			fayeClient.publish(dispatchRequest.uniqueChannelId, eventRequests[i].request);
-			console.log(eventRequests[i].request, "dispatched again");
+			//console.log(eventRequests[i].request, "dispatched again");
 		}
 	}
 	
@@ -51,7 +51,7 @@ define(["util", "http://gigger.mayflower.de/faye.js"], function (util) {
 			fayeClient.subscribe(channel, callback);
 		},
 		stop: function() {
-			console.log("stop gigger");
+			//console.log("stop gigger");
 			this.dispatchRequest.cancel();
 			
 			for (i = 0; i<=eventRequests.length; i++) {

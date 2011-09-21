@@ -1,7 +1,7 @@
 // define require.js module
 define('util', ['md5'], function (md5) {
 	
-	console.log("module util loaded with md5: ", md5);
+	//console.log("module util loaded with md5: ", md5);
 	
 	var getChannelID = function(eventRequest) {
 		var hashInput = [];
@@ -14,7 +14,7 @@ define('util', ['md5'], function (md5) {
 		if (eventRequest.element) hashInput.push("element: " + eventRequest.element);
 		
 		var ret = '/eventRequest/' + eventRequest.event + "/" + md5.MD5(hashInput.toString());
-		console.log("generated channel id: " + ret + " for event: ", eventRequest, " and hashInput: " + hashInput);
+		//console.log("generated channel id: " + ret + " for event: ", eventRequest, " and hashInput: " + hashInput);
 		return ret;
 	}
 	
