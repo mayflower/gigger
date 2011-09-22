@@ -7,11 +7,11 @@ define('util', ['md5'], function (md5) {
 		var hashInput = [];
 		
 		// TODO: this should be done in a more generic way (loop over eventRequest?)
-		if (eventRequest.path) hashInput.push("path: " + eventRequest.path);
-		if (eventRequest.pathRegex) hashInput.push("pathRegex: " + eventRequest.pathRegex);
-		if (eventRequest.tagName) hashInput.push("tagName: " + eventRequest.tagName);
-		if (eventRequest.class) hashInput.push("class: " + eventRequest.class);
-		if (eventRequest.element) hashInput.push("element: " + eventRequest.element);
+		if (eventRequest.path) {hashInput.push("path: " + eventRequest.path)};
+		if (eventRequest.pathRegex) {hashInput.push("pathRegex: " + eventRequest.pathRegex)};
+		if (eventRequest.tagName) {hashInput.push("tagName: " + eventRequest.tagName)};
+		if (eventRequest.class) {hashInput.push("class: " + eventRequest.class)};
+		if (eventRequest.element) {hashInput.push("element: " + eventRequest.element)};
 		
 		var ret = '/eventRequest/' + eventRequest.event + "/" + md5.MD5(hashInput.toString());
 		//console.log("generated channel id: " + ret + " for event: ", eventRequest, " and hashInput: " + hashInput);
