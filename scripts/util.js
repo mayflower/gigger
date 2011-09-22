@@ -10,7 +10,7 @@ define('util', ['md5'], function (md5) {
 		if (eventRequest.path) {hashInput.push("path: " + eventRequest.path)};
 		if (eventRequest.pathRegex) {hashInput.push("pathRegex: " + eventRequest.pathRegex)};
 		if (eventRequest.tagName) {hashInput.push("tagName: " + eventRequest.tagName)};
-		if (eventRequest.class) {hashInput.push("class: " + eventRequest.class)};
+		if (eventRequest.klass) {hashInput.push("class: " + eventRequest.klass)};
 		if (eventRequest.element) {hashInput.push("element: " + eventRequest.element)};
 		
 		var ret = '/eventRequest/' + eventRequest.event + "/" + md5.MD5(hashInput.toString());

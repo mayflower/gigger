@@ -58,18 +58,18 @@ define(["jquery", "util", "http://gigger.mayflower.de/faye.js"], function (jquer
 					
 					// hack to make code more generic
 					elements = jquery("#" + e.element);
-				} else if (e.class != null) {
+				} else if (e.klass != null) {
 					//lookup class and hook event(s)
-					//console.log('class', e.class);
+					//console.log('class', e.klass);
 					
-					elements = jquery("." + e.class);
+					elements = jquery("." + e.klass);
 				} else if (e.tagName != null) {
 					//lookup tag name and hook event(s)
 					//console.log('tagName', e.tagName);
 					
 					elements = jquery(e.tagName);
 				} else {
-					throw 'events must come with element, class or tagName, dropping eventRequest';
+					throw 'events must come with element, klass or tagName, dropping eventRequest';
 				}
 				
 				//console.log('elements is: ', elements);
