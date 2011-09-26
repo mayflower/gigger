@@ -1,0 +1,9 @@
+/var/log/gigger-node.log {
+	daily
+	missingok
+	rotate 7
+	compress
+	copytruncate
+	notifempty
+	create 640 root adm
+}
