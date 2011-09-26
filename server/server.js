@@ -2,7 +2,7 @@ var http = require("http"),
 	faye = require("faye");
 
 // log all infos
-faye.Logging.logLevel = 'info';
+faye.Logging.logLevel = 'warn';
 faye.logger = function(msg) {
 	console.log('logged: ' + msg);
 }
