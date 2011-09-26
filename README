@@ -2,28 +2,45 @@
 
 A javascript library for realtime monitoring of modern web applications.
 
+= Author =
+Felix Kaser <felix.kaser@mayflower.de>
+
 = Requirements = 
 node.js
 npm (comes with newer node versions)
 faye ('npm install faye')
 
 = Usage =
-start the faye server: 'node server/server.js'
+start the faye server: see 'gigger/server/README' for more details
 include require.js in your webapp and add following snippet:
 
 <script type="text/javascript" src="require.js"></script>
 <script type="text/javascript">
-	// make sure developerlib.js can be found by adapting the base URL
-	require.config({baseUrl: "scripts"});
+	require.config({
+		// adapt the base url, where developerlib.js (and others) can be found
+		baseUrl: "scripts",
+		paths: {
+			// adapt the path where the faye script is hosted (caveat: without '.js')
+			"faye": "http://examplefayeserver.com:8000/faye"
+			}
+		});
 	require(["developerlib"], function(developerlib) {
-		// adapt the path to faye
-		gigger = new developerlib.Gigger("http://faye.node.vm:8000/faye");
+		// adapt the path to the gigger server
+		gigger = new developerlib.Gigger("http://examplefayeserver.com:8000");
 	});
 </script>
+
+you need to adapt the base url, the path to faye and the location where the
+faye server is running.
 
 you can now include the monitorlib in the same way in your monitor application
 and start dispatching eventRequests. See gigger/monitor/monitor.html for some
 examples.
 
 == Build ==
-node r.js -o scripts/gigger.build.js
+if you want to have one file whith all modules in it you can build it. The
+script to do this is shipped and can be used with node:
+'node r.js -o scripts/gigger.build.js'
+
+To use the builded file you need to adapt the base path. Faye is not included
+in the build, since our Faye server is hosting that file.
