@@ -4,13 +4,17 @@
 	<link rel="stylesheet" type="text/css" href="shared/example.css" /> 
 	<script type="text/javascript" src="../gigger-build/require.js"></script>
 	<script type="text/javascript">
-		//require.config({baseUrl: "../gigger-build"});
-		require.config({baseUrl: "../scripts"});
+		require.config({
+			baseUrl: "../scripts",
+			paths: {
+					"faye": "http://faye.node.vm:8000/faye"
+				}
+			});
 		require(["monitorlib"], function(monitorlib) {
 			console.log("monitorlib ready", monitorlib);
 			
 			var sitePath = "/gigger/webapp/webapp.html";
-			var gigger = new monitorlib.Gigger("http://gigger.mayflower.de/faye");
+			var gigger = new monitorlib.Gigger("http://faye.node.vm:8000/faye");
 			
 			var identifierString = function(e) {
 				var ret = "";
@@ -54,7 +58,7 @@
 			//eventRequest = {path: sitePath, customJS: myCustomJS};
 			//gigger.requestEvent(eventRequest, addToChart);
 			
-			var fields = {pageX: null, pageY: null, timeStamp: null, currentTarget: {innerText: null}, blub: null};
+			var fields = {pageX: null, pageY: null, timeStamp: null, currentTarget: {href: null, innerText: null}, blub: null};
 			
 			eventRequest = {path: sitePath, tagName: "body", event: "click", fields: fields};
 			gigger.requestEvent(eventRequest, addToChart);
@@ -68,6 +72,14 @@
 			gigger.addChannelListener('/heatmap', function(event) { console.log('got a custom event on heatmap', event, event.x, event.y); addToHeat(event) });
 			eventRequest = {path: sitePath, customJS: "document.getElementsByTagName('body')[0].addEventListener('click', function(e) { gigger.triggerEvent('/heatmap', {event: 'click', x: e.pageX, y: e.pageY}); });"};
 			gigger.requestEvent(eventRequest);
+			
+			
+			var linkClicked = function(e) {
+				console.log(e);
+				console.log('click: ', e, e.fields.currentTarget.href);
+			};
+			eventRequest = {path: sitePath, tagName: "a", event: "click", fields: fields};
+			gigger.requestEvent(eventRequest, linkClicked);
 			
 			gigger.addChannelListener('/catchall', function(event) {
 				console.log('got a custom event on catchall', event);

@@ -3,7 +3,7 @@
 */
 
 //require.js module pattern
-define(["jquery", "util", "http://gigger.mayflower.de/faye.js"], function (jquery, util) {
+define(["jquery", "util", "faye"], function (jquery, util) {
 
 	jquery = $.noConflict(true);
 	//console.log('developerlib started', 'jquery: ', jquery, '$: ', $);

@@ -3,7 +3,7 @@
 */
 
 //require.js module pattern
-define(["util", "http://gigger.mayflower.de/faye.js"], function (util) {
+define(["util", "faye"], function (util) {
 
 	//namespace
 	var Gigger = {
