@@ -1,0 +1,22 @@
+== gigger-server ==
+
+= dependencies =
+node
+faye ('npm install faye')
+upstart (optional)
+
+= usage =
+start the server with 'node server.js' or alternatively using the
+upstart configuration
+
+= upstart =
+you can use upstart to start and stop your node server. An example
+configuration file is given in 'gigger-node.conf'. You need to adapt
+the paths to node, gigger/server/server.js and the user under which
+node should be running.
+
+= logging = 
+if you use upstart, all logs are written to /var/log/gigger-node.log.
+You can set up logrotate if you want to keep your log files limited.
+An example configuration for logrotate is given in 'gigger-node.logrotate'.
+The configuration should be placed under '/etc/logrotate.d/'.
