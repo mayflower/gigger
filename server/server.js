@@ -27,8 +27,6 @@ var serverAuth = {
 			callback(message);
 		};
 		
-		// TODO: publish to /dispatch and subscribe to /eventRequest/* and /dispatchRequest needs auth
-		
 		if (message.channel === '/meta/subscribe') {
 			// authenticate subscriptions to '/eventRequest/...'
 			var subscription = message.subscription;
