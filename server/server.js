@@ -3,11 +3,7 @@ var http = require("http"),
 	authenticator = require("./authenticator");
 
 // log all warnings
-console.log("gigger server start");
 faye.Logging.logLevel = 'warn';
-faye.logger = function(msg) {
-	console.log('logged: ' + msg);
-}
 
 // create new faye node
 var bayeux = new faye.NodeAdapter({
@@ -17,12 +13,14 @@ var bayeux = new faye.NodeAdapter({
 	
 var serverAuth = {
 	incoming: function(message, callback) {
-		console.log("message: " + message.channel);
 		var closure = function(authenticated, cause) {
+			var auth = message.ext && message.ext.auth;
 			if (!authenticated) {
 				cause = cause || 'no reason specified';
-				console.log('not authenticated: ' + cause);
+				faye.Logging.log(['message on ' + message.channel + ' not authenticated: ' + cause + " auth: " + auth], 'info');
 				message.error = 'Not authenticated: ' + cause;
+			} else {
+				faye.Logging.log(['message on ' + message.channel + ' successfully authenticated: ' + auth], 'info');
 			}
 			callback(message);
 		};
@@ -43,20 +41,16 @@ var serverAuth = {
 			}
 			
 			if (authNeeded) {
-				console.log("authentication requested on " + message.subscription)
 				var authObject = message.ext && message.ext.auth;
 				authenticator.authenticate(authObject, closure);
 			} else {
-				console.log("no authentication requested...passing through")
 				callback(message);
 			}
 		} else if (message.channel === '/dispatch') {
 			// authenticate all dispatch messages
-			console.log("authentication requested on dispatch")
 			var authObject = message.ext && message.ext.auth;
 			authenticator.authenticate(authObject, closure);
 		} else {
-			console.log("no authentication requested...passing through")
 			callback(message);
 		}
 	}
