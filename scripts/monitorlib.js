@@ -20,45 +20,46 @@ define(["util", "faye"], function (util) {
 	// global variables
 	var eventRequests, fayeClient;
 	
-	var clientAuth = {
-		outgoing: function(message, callback) {
-			var authNeeded = false;
-			
-			if (message.channel === '/meta/subscribe'){
-				// authenticate subscriptions to '/eventRequest/...'
-				var subscription = message.subscription;
-				
-				if (typeof(subscription) === 'string')
-					subscription = [subscription];
-				
-				for (var i in subscription) {
-					if (subscription[i].substr(0, 13) === '/eventRequest' ||
-						subscription[i].substr(0, 16) === '/dispatchRequest') {
-						authNeeded = true;
-					}
-				}
-				
-			} else if (message.channel === '/dispatch') {
-				// authenticate all dispatch messages
-				authNeeded = true;
-			}
-
-			// Add ext field if it's not present
-			if (!message.ext) message.ext = {};
-
-			if (authNeeded) {
-				message.ext.auth.user = "test";
-				message.ext.auth.password = "gigger";
-			}
-
-			// Carry on and send the message to the server
-			callback(message);
-		}
-	};
-	
 	//Class Gigger
-	Gigger.Gigger = function(service) {
+	Gigger.Gigger = function(service, authObject) {
 		fayeClient = new Faye.Client(service);
+		
+		// append authentication to some messages
+		var clientAuth = {
+			outgoing: function(message, callback) {
+				var authNeeded = false;
+				
+				if (message.channel === '/meta/subscribe'){
+					// authenticate subscriptions to '/eventRequest/...'
+					var subscription = message.subscription;
+					
+					if (typeof(subscription) === 'string')
+						subscription = [subscription];
+					
+					for (var i in subscription) {
+						if (subscription[i].substr(0, 13) === '/eventRequest' ||
+							subscription[i].substr(0, 16) === '/dispatchRequest') {
+							authNeeded = true;
+						}
+					}
+					
+				} else if (message.channel === '/dispatch') {
+					// authenticate all dispatch messages
+					authNeeded = true;
+				}
+
+				// Add ext field if it's not present
+				if (!message.ext) message.ext = {};
+
+				if (authNeeded) {
+					message.ext.auth = authObject;
+				}
+
+				// Carry on and send the message to the server
+				callback(message);
+			}
+		};
+		
 		fayeClient.addExtension(clientAuth);
 		this.client = fayeClient;
 		// stores all event requests in an object
