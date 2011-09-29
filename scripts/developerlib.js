@@ -11,7 +11,7 @@ define(["jquery", "util", "faye"], function (jquery, util) {
 
 	//namespace
 	var Gigger = {
-		VERSION: "0.1"
+		VERSION: util.VERSION
 	};
 	
 	// global fayeClient
