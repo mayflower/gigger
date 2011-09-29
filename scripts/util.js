@@ -14,7 +14,7 @@ define('util', ['md5'], function (md5) {
 		if (eventRequest.element) {hashInput.push("element: " + eventRequest.element)};
 		
 		// note: changes to the prefix must be changed in gigger/server/server.js as well for authentication reasons
-		var ret = '/eventRequest/' + eventRequest.event + "/" + md5.MD5(hashInput.toString());
+		var ret = '/event/' + eventRequest.event + "/" + md5.MD5(hashInput.toString());
 		//console.log("generated channel id: " + ret + " for event: ", eventRequest, " and hashInput: " + hashInput);
 		return ret;
 	}

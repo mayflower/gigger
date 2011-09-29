@@ -30,14 +30,14 @@ define(["util", "faye"], function (util) {
 				var authNeeded = false;
 				
 				if (message.channel === '/meta/subscribe'){
-					// authenticate subscriptions to '/eventRequest/...'
+					// authenticate subscriptions to '/event/...' and '/dispatchRequest'
 					var subscription = message.subscription;
 					
 					if (typeof(subscription) === 'string')
 						subscription = [subscription];
 					
 					for (var i in subscription) {
-						if (subscription[i].substr(0, 13) === '/eventRequest' ||
+						if (subscription[i].substr(0, 7) === '/event/' ||
 							subscription[i].substr(0, 16) === '/dispatchRequest') {
 							authNeeded = true;
 						}
