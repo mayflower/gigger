@@ -103,9 +103,6 @@ define(["jquery", "util", "faye"], function (jquery, util) {
 				//evaluate custom js
 				//console.log('customJS', e.customJS);
 				
-				// don't allow custom js until sophisticated security measures have been taken
-				throw 'custom javascript is not yet allowed';
-				
 				// make sure this gets evaluated only once
 				if (jquery.inArray(e.customJS, registeredCustomJS) == -1) {
 					registeredCustomJS.push(e.customJS);
