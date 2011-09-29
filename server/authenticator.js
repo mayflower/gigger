@@ -1,5 +1,5 @@
 function authenticate(auth, callback) {
-	if (auth)
+	if (auth && auth.user === 'test' && auth.password === 'gigger')
 		callback(true);
 	else
 		callback(false, "no auth provided");

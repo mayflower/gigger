@@ -47,7 +47,8 @@ define(["util", "faye"], function (util) {
 			if (!message.ext) message.ext = {};
 
 			if (authNeeded) {
-				message.ext.auth = "auth-string";
+				message.ext.auth.user = "test";
+				message.ext.auth.password = "gigger";
 			}
 
 			// Carry on and send the message to the server
