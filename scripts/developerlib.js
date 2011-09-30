@@ -1,5 +1,6 @@
 /*
-* Author: Felix Kaser <felix.kaser@mayflower.de>
+* Author: Felix Kaser <f.kaser@gmx.net>
+* (C) 2011 Mayflower GmbH
 */
 
 //require.js module pattern

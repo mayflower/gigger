@@ -1,3 +1,8 @@
+/*
+* Author: Felix Kaser <f.kaser@gmx.net>
+* (C) 2011 Mayflower GmbH
+*/
+
 /** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Implement your authentication algorithm here. You can
  * query a database, generate some nice hashes, forward the

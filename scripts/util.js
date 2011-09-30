@@ -1,3 +1,8 @@
+/*
+* Author: Felix Kaser <f.kaser@gmx.net>
+* (C) 2011 Mayflower GmbH
+*/
+
 // define require.js module
 define('util', ['md5'], function (md5) {
 	

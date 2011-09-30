@@ -18,7 +18,7 @@
  * Modified with german comments and some information about collisions.
  * (Ralf Mieke, ralf@miekenet.de, http://mieke.home.pages.de)
  * 
- * Modularized for require.js by Felix Kaser <felix.kaser@mayflower.de>
+ * Modularized for require.js by Felix Kaser <felix.kaser@gmx.net>
  */
 
 // define require.js module

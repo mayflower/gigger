@@ -1,3 +1,8 @@
+/*
+* Author: Felix Kaser <f.kaser@gmx.net>
+* (C) 2011 Mayflower GmbH
+*/
+
 var http = require("http"),
 	faye = require("faye"),
 	authenticator = require("./authenticator");
