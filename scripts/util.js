@@ -1,6 +1,10 @@
 /*
 * Author: Felix Kaser <f.kaser@gmx.net>
-* (C) 2011 Mayflower GmbH
+* Copyright (c) 2011, Mayflower GmbH
+* All rights reserved.
+* 
+* This software is distributed under the BSD 3-clause
+* license. The full license can be found in ../LICENSE.
 */
 
 // define require.js module
