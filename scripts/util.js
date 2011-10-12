@@ -31,6 +31,6 @@ define('util', ['md5'], function (md5) {
 	// return exposed api
 	return {
 		getChannelID: getChannelID,
-		VERSION: "0.2.unstable"
+		VERSION: "0.3.unstable"
 	};
 })
