@@ -1,0 +1,13 @@
+{
+  "name": "gigger",
+  "version": "0.3.unstable",
+  "description": "Java Script Real-Time monitoring framework",
+  "keywords": ["framework", "web", "real-time", "live", "monitor", "javascript"],
+  "repository": "git://github.com/Mayflower/gigger.git",
+  "author": "Felix Kaser",
+  "dependencies": {
+      "faye": ">= 0.6.6"
+  },
+  "main": "server",
+  "engines": { "node": ">= 0.4.1 < 0.5.0" }
+}
