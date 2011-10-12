@@ -1,0 +1,13 @@
+{
+  "name": "gigger",
+  "version": "0.2.unstable",
+  "description": "Real-Time monitoring framework",
+  "keywords": ["framework", "web", "real-time", "live", "monitor"],
+  "repository": "git://github.com/kaserf/gigger.git",
+  "author": "Felix Kaser",
+  "repository": "git://github.com/kaserf/gigger",
+  "dependencies": {
+  },
+  "main": "server",
+  "engines": { "node": ">= 0.4.1 < 0.5.0" }
+}
