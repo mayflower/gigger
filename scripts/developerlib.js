@@ -98,9 +98,72 @@ define(["jquery", "util", "faye"], function (jquery, util) {
 								}
 							}
 						};
+
+                        // handle requested siteElements and fill
+                        function fillSiteElements(currentElements) {
+                            for (var element in currentElements) {
+                                var jqueryElement = null;
+                                if (typeof(currentElements[element]) == "object") {
+                                    /**
+                                                                 * either id, class (klass) or name must be defined
+                                                                 * name needs type and subtype
+                                                                 * every jquery selector can be used
+                                                                 */
+                                    if (currentElements[element].id !== undefined && currentElements[element].id !== null) {
+                                        jqueryElement = jquery(currentElements[element].id);
+                                    } else if (currentElements[element].klass !== undefined && currentElements[element].klass !== null) {
+                                        jqueryElement = jquery(currentElements[element].klass);
+                                    } else if (currentElements[element].name !== undefined && currentElements[element].name !== null) {
+                                        jqueryElement = jquery(currentElements[element].type + ":" + currentElements[element].subtype + "[name=" + currentElements[element].name + "]");
+                                    } else {
+                                        throw 'no identifier for siteElement given!';
+                                    }
+
+                                    if (jqueryElement !== null) {
+                                        /**
+                                                                         * if special child requested child has to be set
+                                                                         * can be used with jquery selector into children() function or
+                                                                         * in combination with a defined attribute name to get requested child
+                                                                         */
+                                        if (currentElements[element].child !== null && currentElements[element].child !== undefined) {
+                                            if (currentElements[element].attribute !== null && currentElements[element].attribute !== undefined) {
+                                                jqueryElement.children().each(function() {
+                                                     if(jquery(this).attr(currentElements[element].attribute) == currentElements[element].child)
+                                                     {
+                                                         jqueryElement = jquery(this);
+                                                     }
+                                                });
+                                            } else {
+                                                jqueryElement = jqueryElement.children(currentElements[element].child);
+                                            }
+                                        }
+
+                                        /**
+                                                                         * allowed are input | select, html, text
+                                                                         * input and select delivers value
+                                                                         */
+                                        if (currentElements[element].type == "input" || currentElements[element].type == "select") {
+                                            currentElements[element] = jqueryElement.val();
+                                        } else if (currentElements[element].type == "html") {
+                                            currentElements[element] = jqueryElement.html();
+                                        } else if (currentElements[element].type == "text") {
+                                            currentElements[element] = jqueryElement.text();
+                                        } else {
+                                            throw 'no valid element type defined!';
+                                        }
+                                    }
+                                }  else {
+                                    throw 'element is not an Object!';
+                                }
+                            }
+                        }
 						
 						// recursively fill fields
 						fillFields(event, e.fields);
+                        // do the siteElements thing
+                        if (e.siteElements !== null && e.siteElements !== undefined) {
+                            fillSiteElements(e.siteElements);
+                        }
 						fayeClient.publish(util.getChannelID(e), e);
 					});
 				});
