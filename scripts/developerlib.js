@@ -1,6 +1,6 @@
 /*
 * Authors: Felix Kaser <f.kaser@gmx.net>
-*            Benedikt Grande <benedikt.grande@mayflower.de>
+*          Benedikt Grande <benedikt.grande@mayflower.de>
 * Copyright (c) 2011, Mayflower GmbH
 * All rights reserved.
 *
