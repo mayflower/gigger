@@ -2,8 +2,9 @@
 
 A javascript library for realtime monitoring of modern web applications.
 
-= Author =
+= Authors =
 Felix Kaser <felix.kaser@mayflower.de>
+Benedikt Grande <benedikt.grande@mayflower.de>
 
 = Requirements = 
 node.js
