@@ -58,23 +58,27 @@
 			//eventRequest = {path: sitePath, customJS: myCustomJS};
 			//gigger.requestEvent(eventRequest, addToChart);
 
-           /**
-                     *  array for siteElements we want to be delivered
-                     *  allowed structure:
-                     *  elements = { yourElementName:
-                     *      {id: "#idName" | klass: ".className" | name: "elementName" (can be jquery selectors),
-                     *       type: "input" | "select" | "text" | "html",,
-                     *       subtype: "text"  "button" | "checkbox" | "radio" (and so on),
-                     *       child: "childSelector",
-                     *       attribute: "attributeName"}
-                     *   }
-                     */
-            siteElements = {
-                test1: {id: "#amountToBasket", type: "input", subtype: "text"},
-                test2: {id: "#productTitle", type: "text"},
-                test3: {id: "#productPrice > strong", type: "text", child: "[itemprop='price']"}
-            }
+			/**
+			 *  array for siteElements we want to be delivered
+			 *  allowed structure:
+			 *  elements = { yourElementName:
+			 *      {id: "#idName" | klass: ".className" | name: "elementName" (can be jquery selectors),
+			 *       type: "input" | "select" | "text" | "html",,
+			 *       subtype: "text"  "button" | "checkbox" | "radio" (and so on),
+			 *       child: "childSelector",
+			 *       attribute: "attributeName"}
+			 *   }
+			 */
 
+			/**
+			 * usage example for siteElements
+			 * siteElements = {
+			 *    test1: {id: "#amountToBasket", type: "input", subtype: "text"},
+			 *    test2: {id: "#productTitle", type: "text"},
+			 *    test3: {id: "#productPrice > strong", type: "text", child: "[itemprop='price']"}
+			 * }
+			 *
+			 */
 			
 			var fields = {pageX: null, pageY: null, timeStamp: null, currentTarget: {href: null, innerText: null}, blub: null};
 			
