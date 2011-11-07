@@ -1,5 +1,6 @@
 /*
 * Author: Felix Kaser <f.kaser@gmx.net>
+*            Benedikt Grande <benedikt.grande@mayflower.de>
 * Copyright (c) 2011, Mayflower GmbH
 * All rights reserved.
 * 
@@ -51,11 +52,11 @@ define(["jquery", "util", "faye"], function (jquery, util) {
 					return;
 				}
 			} else {
-				throw 'neither path nor pathRegex was specified, dropping eventRequest';
+			    throw 'neither path nor pathRegex was specified, dropping eventRequest';
 			}
 			
 			if (e.event != null) {
-				// event was specified, must come with element, class or tagName
+			    // event was specified, must come with element, class or tagName
 				var elements;
 				if (e.element != null) {
 					//lookup element and hook event
@@ -100,21 +101,21 @@ define(["jquery", "util", "faye"], function (jquery, util) {
 						};
 
                         // handle requested siteElements and fill
-                        function fillSiteElements(currentElements) {
-                            for (var element in currentElements) {
+                        function fillSiteElements(siteElements) {
+                            for (var element in siteElements) {
                                 var jqueryElement = null;
-                                if (typeof(currentElements[element]) == "object") {
+                                if (typeof(siteElements[element]) == "object") {
                                     /**
                                                                  * either id, class (klass) or name must be defined
                                                                  * name needs type and subtype
                                                                  * every jquery selector can be used
                                                                  */
-                                    if (currentElements[element].id !== undefined && currentElements[element].id !== null) {
-                                        jqueryElement = jquery(currentElements[element].id);
-                                    } else if (currentElements[element].klass !== undefined && currentElements[element].klass !== null) {
-                                        jqueryElement = jquery(currentElements[element].klass);
-                                    } else if (currentElements[element].name !== undefined && currentElements[element].name !== null) {
-                                        jqueryElement = jquery(currentElements[element].type + ":" + currentElements[element].subtype + "[name=" + currentElements[element].name + "]");
+                                    if (siteElements[element].id !== undefined && siteElements[element].id !== null) {
+                                        jqueryElement = jquery(siteElements[element].id);
+                                    } else if (siteElements[element].klass !== undefined && siteElements[element].klass !== null) {
+                                        jqueryElement = jquery(siteElements[element].klass);
+                                    } else if (siteElements[element].name !== undefined && siteElements[element].name !== null) {
+                                        jqueryElement = jquery(siteElements[element].type + ":" + siteElements[element].subtype + "[name=" + siteElements[element].name + "]");
                                     } else {
                                         throw 'no identifier for siteElement given!';
                                     }
@@ -125,16 +126,16 @@ define(["jquery", "util", "faye"], function (jquery, util) {
                                                                          * can be used with jquery selector into children() function or
                                                                          * in combination with a defined attribute name to get requested child
                                                                          */
-                                        if (currentElements[element].child !== null && currentElements[element].child !== undefined) {
-                                            if (currentElements[element].attribute !== null && currentElements[element].attribute !== undefined) {
+                                        if (siteElements[element].child !== null && siteElements[element].child !== undefined) {
+                                            if (siteElements[element].attribute !== null && siteElements[element].attribute !== undefined) {
                                                 jqueryElement.children().each(function() {
-                                                     if(jquery(this).attr(currentElements[element].attribute) == currentElements[element].child)
+                                                     if(jquery(this).attr(siteElements[element].attribute) == siteElements[element].child)
                                                      {
                                                          jqueryElement = jquery(this);
                                                      }
                                                 });
                                             } else {
-                                                jqueryElement = jqueryElement.children(currentElements[element].child);
+                                                jqueryElement = jqueryElement.children(siteElements[element].child);
                                             }
                                         }
 
@@ -142,12 +143,12 @@ define(["jquery", "util", "faye"], function (jquery, util) {
                                                                          * allowed are input | select, html, text
                                                                          * input and select delivers value
                                                                          */
-                                        if (currentElements[element].type == "input" || currentElements[element].type == "select") {
-                                            currentElements[element] = jqueryElement.val();
-                                        } else if (currentElements[element].type == "html") {
-                                            currentElements[element] = jqueryElement.html();
-                                        } else if (currentElements[element].type == "text") {
-                                            currentElements[element] = jqueryElement.text();
+                                        if (siteElements[element].type == "input" || siteElements[element].type == "select") {
+                                            siteElements[element] = jqueryElement.val();
+                                        } else if (siteElements[element].type == "html") {
+                                            siteElements[element] = jqueryElement.html();
+                                        } else if (siteElements[element].type == "text") {
+                                            siteElements[element] = jqueryElement.text();
                                         } else {
                                             throw 'no valid element type defined!';
                                         }
@@ -160,7 +161,8 @@ define(["jquery", "util", "faye"], function (jquery, util) {
 						
 						// recursively fill fields
 						fillFields(event, e.fields);
-                        // do the siteElements thing
+
+                        // fill the requested site elements
                         if (e.siteElements !== null && e.siteElements !== undefined) {
                             fillSiteElements(e.siteElements);
                         }
