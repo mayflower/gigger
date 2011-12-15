@@ -97,7 +97,7 @@ define(["util", "faye"], function (util) {
 			//console.log("stop gigger");
 			this.dispatchRequest.cancel();
 			
-			for (i = 0; i<=eventRequests.length; i++) {
+			for (var i = 0; i < eventRequests.length; i++) {
 				console.log(eventRequests[i].handle, "stop this");
 			}
 		}
